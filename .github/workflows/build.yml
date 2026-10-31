@@ -1,0 +1,66 @@
+name: build-image
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - cmd/bambu-exporter/**
+      - pkg/**
+      - go.mod
+      - go.sum
+      - Dockerfile
+      - .dockerignore
+      - .github/workflows/build.yml
+  pull_request:
+    paths:
+      - cmd/bambu-exporter/**
+      - pkg/**
+      - go.mod
+      - go.sum
+      - Dockerfile
+      - .dockerignore
+      - .github/workflows/build.yml
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
+
+      - if: github.event_name != 'pull_request'
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: build
+        uses: docker/build-push-action@48aba3b46d1b1fec4febb7c5d0c644b249a11355 # v6.10.0
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          provenance: false
+          tags: |
+            ghcr.io/polarn/bambu-exporter:latest
+            ghcr.io/polarn/bambu-exporter:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/polarn/bambu
+            org.opencontainers.image.revision=${{ github.sha }}
+
+      - if: github.event_name != 'pull_request'
+        run: |
+          echo "### bambu-exporter" >> "$GITHUB_STEP_SUMMARY"
+          echo "Pin in flux: \`ghcr.io/polarn/bambu-exporter@${{ steps.build.outputs.digest }}\`" >> "$GITHUB_STEP_SUMMARY"

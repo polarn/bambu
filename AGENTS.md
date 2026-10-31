@@ -17,7 +17,7 @@ Packages:
 ## Where it is wired up
 
 - chezmoi (`~/.local/share/chezmoi`): `dot_config/waybar/modules/p2s.jsonc` runs `dot_local/bin/executable_waybar-p2s.sh`, which execs `bambu-ctl waybar`; `run_onchange_install-waybar-modules.sh` has the `go install github.com/polarn/bambu/cmd/bambu-ctl@latest` line; pill colours are in `dot_config/waybar/style.css` keyed `#custom-p2s.<class>`.
-- `polarn/container-images/bambu-exporter/Dockerfile` builds the exporter from a pinned `SRC_REF` of this repo. Shipping a change means bumping that SHA and re-pinning the resulting digest in `polarn/flux` (`apps/microk8s/bambu-exporter`).
+- The `Dockerfile` here builds the exporter. `.github/workflows/build.yml` pushes `ghcr.io/polarn/bambu-exporter:<sha>` (and `:latest`) on every push to `main` that touches the exporter, `pkg/`, the module files or the Dockerfile, and prints the digest in the run summary; a PR builds without pushing. Shipping a change means merging it and re-pinning that digest in `polarn/flux` (`apps/microk8s/bambu-exporter`), which is a deploy. The image runs as 65532 to satisfy the manifests' `runAsNonRoot` and carries the CA bundle because the exporter verifies the cloud broker's certificate.
 
 ## Building
 
