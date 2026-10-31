@@ -1,7 +1,7 @@
 # bambu
 Bambu Lab cloud tooling in Go: `bambu-ctl`, a CLI that also feeds a Waybar pill, and `bambu-exporter`, a Prometheus exporter that runs in Kubernetes. Both talk to Bambu's cloud MQTT broker with the account token, so the printer stays in normal Cloud mode. Split out of [waybar-modules](https://github.com/polarn/waybar-modules) in October 2026; see [AGENTS.md](AGENTS.md) for the conventions and the hard-won details.
 
-`make` builds `bambu-ctl` into `build/`; `make install` copies it to `~/.local/bin`. `bambu-exporter` is built by its container image (`polarn/container-images`), or locally with `go build ./cmd/bambu-exporter`.
+`make` builds `bambu-ctl` into `build/`; `make install` copies it to `~/.local/bin`. `bambu-exporter` is built into `ghcr.io/polarn/bambu-exporter` by `.github/workflows/build.yml` on every push to `main` that touches it, or locally with `go build ./cmd/bambu-exporter`.
 
 ## bambu-ctl
 A CLI for Bambu Lab's cloud that reports 3D-printer state (tested with a P2S). `bambu-ctl waybar` emits one JSON line for a Waybar custom module (run it with `"interval"`, not as a daemon) — progress + time left while printing, nozzle temperature otherwise, with the full report (temps, AMS humidity, loaded filament slots) in the tooltip.
