@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/polarn/waybar-modules/pkg/bambu"
+	"github.com/polarn/bambu/pkg/bambu"
 )
 
 // taskCache holds the printer's latest job from the cloud REST API, plus

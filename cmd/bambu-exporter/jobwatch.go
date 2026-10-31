@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/polarn/waybar-modules/pkg/bambu"
+	"github.com/polarn/bambu/pkg/bambu"
 )
 
 // jobWatch accumulates the two things a per-scrape snapshot cannot

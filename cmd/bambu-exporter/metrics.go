@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/polarn/waybar-modules/pkg/bambu"
+	"github.com/polarn/bambu/pkg/bambu"
 )
 
 // Prometheus text exposition, hand-rolled for the same reason as the MQTT

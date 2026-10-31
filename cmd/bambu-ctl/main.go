@@ -29,8 +29,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/polarn/waybar-modules/pkg/bambu"
-	"github.com/polarn/waybar-modules/pkg/waybar"
+	"github.com/polarn/bambu/pkg/bambu"
+	"github.com/polarn/bambu/pkg/waybar"
 	"golang.org/x/term"
 )
 

@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/polarn/waybar-modules/pkg/bambu"
+	"github.com/polarn/bambu/pkg/bambu"
 )
 
 func quiet(string, ...any) {}
